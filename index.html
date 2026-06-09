@@ -1,14 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>School Mgt System</title>
+<title>SmartEdu Enterprise</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 
 <style>
@@ -74,14 +74,6 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 .chat-msg{margin:8px 0;padding:10px;border-radius:8px}
 .chat-msg.user{background:var(--accent);color:#000}
 .chat-msg.ai{background:var(--bg2)}
-.announcement-card{background:var(--bg3);padding:16px;border-radius:10px;margin-bottom:12px;position:relative}
-.announcement-card h4{margin-bottom:8px;color:var(--accent);padding-right:30px}
-.announcement-card p{margin-bottom:8px;color:var(--text2);white-space:pre-wrap}
-.announcement-file{display:inline-block;margin:4px 8px 4px 0;padding:6px 12px;background:var(--bg2);border-radius:8px;font-size:0.85rem;text-decoration:none;color:var(--text)}
-.announcement-file:hover{background:var(--accent);color:#000}
-.announcement-meta{font-size:0.75rem;color:var(--text2);margin-top:8px}
-.delete-ann{position:absolute;top:12px;right:12px;background:var(--danger);border:none;color:#fff;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.75rem}
-.delete-ann:hover{opacity:0.8}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:768px){
 .sidebar{left:-260px}
@@ -183,8 +175,8 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
   <div class="sidebar" id="sidebar">
     <h3>SmartEdu</h3>
     <button class="nav-btn active" data-page="dashboard">📊 Dashboard</button>
-    <button class="nav-btn" data-page="students">👨🎓 Students</button>
-    <button class="nav-btn" data-page="teachers" id="teachersNav">👨🏫 Teachers</button>
+    <button class="nav-btn" data-page="students">👨‍🎓 Students</button>
+    <button class="nav-btn" data-page="teachers" id="teachersNav">👨‍🏫 Teachers</button>
     <button class="nav-btn" data-page="attendance">📋 Attendance</button>
     <button class="nav-btn" id="feesNav" data-page="fees">💰 Fees</button>
     <button class="nav-btn" id="aiNav" data-page="ai">🤖 AI Help</button>
@@ -207,32 +199,6 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
         <div class="stat-card"><h3>Total Teachers</h3><h2 id="totalTeachers">0</h2></div>
         <div class="stat-card"><h3>Fees Collected</h3><h2 id="feesTotal">UGX 0</h2></div>
         <div class="stat-card"><h3>Today's Attendance</h3><h2 id="attendanceRate">0%</h2></div>
-      </div>
-
-      <!-- ANNOUNCEMENTS FEED -->
-      <div class="card" id="announcementFeed" style="margin-top:16px">
-        <h2 style="margin-bottom:16px">📢 Announcements</h2>
-        <div id="announcementList"></div>
-      </div>
-
-      <!-- ADMIN ANNOUNCEMENT CONTROLS -->
-      <div id="adminAnnouncementControls" class="hidden">
-        <div class="grid" style="margin-top:16px">
-          <div class="card">
-            <h3 style="margin-bottom:16px">📤 Send to Students</h3>
-            <input id="studentAnnTitle" placeholder="Title">
-            <textarea id="studentAnnMsg" rows="4" placeholder="Message..."></textarea>
-            <input type="file" id="studentAnnFiles" multiple accept="image/*,.pdf">
-            <button class="btn" id="sendStudentAnnBtn">Send to Students</button>
-          </div>
-          <div class="card">
-            <h3 style="margin-bottom:16px">📤 Send to Teachers</h3>
-            <input id="teacherAnnTitle" placeholder="Title">
-            <textarea id="teacherAnnMsg" rows="4" placeholder="Message..."></textarea>
-            <input type="file" id="teacherAnnFiles" multiple accept="image/*,.pdf">
-            <button class="btn" id="sendTeacherAnnBtn">Send to Teachers</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -284,12 +250,12 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
           <div class="header">
             <h1>📚 SmartEdu Billing System <span style="font-size:1rem">🇺🇬 UGX</span></h1>
             <div class="action-buttons">
-              <span id="billingSyncStatus" class="sync-status">☁ Connecting...</span>
+              <span id="billingSyncStatus" class="sync-status">☁️ Connecting...</span>
               <input type="file" id="billingExcelFile" accept=".xlsx,.xls" hidden>
               <button id="billingImportBtn">📁 Import Excel</button>
               <button id="billingExportExcelBtn" class="outline">📊 Export Excel</button>
-              <button id="billingPrintBtn" class="outline">🖨 Print Report</button>
-              <button id="billingClearAllBtn" class="danger">🗑 Clear All</button>
+              <button id="billingPrintBtn" class="outline">🖨️ Print Report</button>
+              <button id="billingClearAllBtn" class="danger">🗑️ Clear All</button>
             </div>
           </div>
 
@@ -379,7 +345,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 let currentUser = null;
@@ -391,7 +356,6 @@ let billingSchoolData = {students:[]};
 let billingSearchQuery = "";
 let billingSelectedStudentId = null;
 let billingUnsub = null;
-let announcementUnsub = null;
 
 document.addEventListener('DOMContentLoaded', ()=>{
   attachEvents();
@@ -412,8 +376,6 @@ function attachEvents(){
   get('addStudentBtn')?.addEventListener('click', addStudent);
   get('addTeacherBtn')?.addEventListener('click', addTeacher);
   get('sendChatBtn')?.addEventListener('click', sendChat);
-  get('sendStudentAnnBtn')?.addEventListener('click', ()=>sendAnnouncement('student'));
-  get('sendTeacherAnnBtn')?.addEventListener('click', ()=>sendAnnouncement('teacher'));
 
   get('chatInput')?.addEventListener('keypress', e=>{
     if(e.key === 'Enter'){ sendChat(); }
@@ -507,7 +469,6 @@ async function showApp(user){
 
   applyRolePermissions();
   loadData();
-  loadAnnouncements();
 }
 
 function showLogin(){
@@ -520,7 +481,6 @@ function showLogin(){
 function logout(){
   unsubscribers.forEach(unsub=>unsub());
   if(billingUnsub)billingUnsub();
-  if(announcementUnsub)announcementUnsub();
   localStorage.removeItem('smartedu_uid');
   auth.signOut();
   showLogin();
@@ -559,7 +519,6 @@ function applyRolePermissions(){
   document.getElementById('actionHeader').style.display=isStudent?'none':'';
   document.getElementById('billingAddStudentForm').style.display=isAdmin?'':'none';
   document.getElementById('billingClearAllBtn').style.display=isAdmin?'':'none';
-  document.getElementById('adminAnnouncementControls').classList.toggle('hidden', !isAdmin);
 }
 
 async function addStudent(){
@@ -580,7 +539,12 @@ async function addStudent(){
 
 async function addTeacher(){
   if(userRole!=='admin')return showToast("Admin only","error");
-  const name=document.getElementById('t
+  const name=document.getElementById('tName').value.trim();
+  const subject=document.getElementById('tSubject').value.trim();
+  if(!name||!subject)return showToast("Fill all fields","error");
+
+  await db.collection("teachers").add({
+    name,subject,createdAt:firebase.firestore.FieldValue.serverTimestamp(),
     createdBy:currentUser.uid
   });
   document.getElementById('tName').value='';
@@ -611,7 +575,7 @@ function loadData(){
       const d=doc.data();
       const date=d.createdAt?new Date(d.createdAt.toDate()).toLocaleDateString():'-';
       const actions=userRole==='admin'
-   ?`<td><button class="btn btn-danger" style="padding:6px 12px;font-size:0.85rem" onclick="deleteDoc('students','${doc.id}')">Delete</button></td>`
+     ?`<td><button class="btn btn-danger" style="padding:6px 12px;font-size:0.85rem" onclick="deleteDoc('students','${doc.id}')">Delete</button></td>`
       :'<td>-</td>';
       html+=`<tr><td>${d.name}</td><td>${d.class}</td><td>${date}</td>${actions}</tr>`;
     });
@@ -635,7 +599,7 @@ function loadData(){
     unsubscribers.push(unsub2);
 
     const unsub3=db.collection("fees").orderBy('createdAt','desc').onSnapshot(snap=>{
-      let total=0;
+            let total=0;
       snap.forEach(doc=>{
         if(doc.data().type==='payment')total+=Number(doc.data().amount);
       });
@@ -699,7 +663,7 @@ function initBilling(){
         }
       });
 
-      document.getElementById('billingSyncStatus').textContent = "☁ Synced";
+      document.getElementById('billingSyncStatus').textContent = "☁️ Synced";
       billingUpdateSummary();
       billingRenderStudentList();
       if(billingSelectedStudentId) billingSelectStudent(billingSelectedStudentId);
@@ -798,7 +762,8 @@ function billingSelectStudent(id) {
       <div class="form-group"><label>Amount</label><input type="number" id="billingFeeAmount"></div>
       <div class="form-group"><label>Date</label><input type="date" id="billingFeeDate"></div>
       <div><button class="primary" onclick="billingAddFee('${student.id}')" style="margin-top:1.4rem;">Add Fee</button></div>
-    </div>`:''}
+    </div>`:''
+    }
 
     <hr>
 
@@ -828,7 +793,8 @@ function billingSelectStudent(id) {
       <div class="form-group"><label>Date</label><input type="date" id="billingPayDate"></div>
       <div class="form-group"><label>Note</label><input type="text" id="billingPayNote"></div>
       <div><button class="primary" onclick="billingAddPayment('${student.id}')" style="margin-top:1.4rem;">Add Payment</button></div>
-    </div>`:''}
+    </div>`:''
+    }
   `;
 }
 
@@ -1019,129 +985,6 @@ async function sendChat(){
     if(typing){ typing.innerHTML = reply; }
     box.scrollTop = box.scrollHeight;
   },1000);
-}
-
-/* ===================== ANNOUNCEMENTS MODULE ===================== */
-
-function loadAnnouncements(){
-  if(announcementUnsub) announcementUnsub();
-
-  let query = db.collection('announcements').orderBy('createdAt','desc');
-
-  announcementUnsub = query.onSnapshot(snap=>{
-    let html = '';
-    if(snap.empty){
-      html = '<p style="color:var(--text2);text-align:center">No announcements yet</p>';
-    }else{
-      snap.forEach(doc=>{
-        const d = doc.data();
-
-        // ROLE FILTERING LOGIC
-        // Students: only 'student'
-        // Teachers: 'student' + 'teacher'
-        // Admin: all
-        let showThis = false;
-        if(userRole === 'admin') showThis = true;
-        else if(userRole === 'teacher') showThis = true; // teachers see both
-        else if(userRole === 'student' && d.target === 'student') showThis = true;
-
-        if(!showThis) return;
-
-        const date = d.createdAt?new Date(d.createdAt.toDate()).toLocaleString():'-';
-        let filesHtml = '';
-        if(d.files && d.files.length){
-          filesHtml = '<div style="margin-top:8px">';
-          d.files.forEach(f=>{
-            const icon = f.type.includes('pdf')?'📄':'🖼️';
-            filesHtml += `<a href="${f.url}" target="_blank" class="announcement-file">${icon} ${f.name}</a>`;
-          });
-          filesHtml += '</div>';
-        }
-
-        const targetBadge = d.target === 'student'
-         ? '<span class="badge badge-student" style="margin-left:8px;font-size:0.7rem">Students</span>'
-          : '<span class="badge badge-teacher" style="margin-left:8px;font-size:0.7rem">Teachers</span>';
-
-        html += `
-          <div class="announcement-card">
-            ${userRole==='admin'?`<button class="delete-ann" onclick="deleteAnnouncement('${doc.id}')">×</button>`:''}
-            <h4>${d.title}${userRole==='admin'?targetBadge:''}</h4>
-            <p>${d.message}</p>
-            ${filesHtml}
-            <div class="announcement-meta">Posted: ${date}</div>
-          </div>
-        `;
-      });
-    }
-    if(html === '') html = '<p style="color:var(--text2);text-align:center">No announcements for you yet</p>';
-    document.getElementById('announcementList').innerHTML = html;
-  });
-}
-
-async function sendAnnouncement(target){
-  if(userRole!=='admin')return showToast("Admin only","error");
-
-  const titleId = target+'AnnTitle';
-  const msgId = target+'AnnMsg';
-  const filesId = target+'AnnFiles';
-  const btnId = 'send'+target.charAt(0).toUpperCase()+target.slice(1)+'AnnBtn';
-
-  const title = document.getElementById(titleId).value.trim();
-  const message = document.getElementById(msgId).value.trim();
-  const files = document.getElementById(filesId).files;
-
-  if(!title||!message)return showToast("Fill title and message","error");
-
-  const btn = document.getElementById(btnId);
-  btn.innerHTML = '<span class="loading"></span> Sending...';
-  btn.disabled = true;
-
-  try{
-    let fileData = [];
-    if(files.length){
-      for(let file of files){
-        const fileRef = storage.ref(`announcements/${Date.now()}_${file.name}`);
-        const snapshot = await fileRef.put(file);
-        const url = await snapshot.ref.getDownloadURL();
-        fileData.push({name:file.name,url,type:file.type});
-      }
-    }
-
-    await db.collection('announcements').add({
-      title,message,target,files:fileData,
-      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-      createdBy:currentUser.uid
-    });
-
-    document.getElementById(titleId).value='';
-    document.getElementById(msgId).value='';
-    document.getElementById(filesId).value='';
-    showToast(`Sent to ${target}s`);
-  }catch(e){
-    showToast(e.message,"error");
-  }finally{
-    btn.textContent = 'Send to '+target.charAt(0).toUpperCase()+target.slice(1)+'s';
-    btn.disabled = false;
-  }
-}
-
-async function deleteAnnouncement(id){
-  if(userRole!=='admin')return showToast("Admin only","error");
-  if(!confirm("Delete this announcement?"))return;
-
-  try{
-    const doc = await db.collection('announcements').doc(id).get();
-    const data = doc.data();
-    if(data.files){
-      for(let f of data.files){
-        try{ await storage.refFromURL(f.url).delete(); }catch(e){}
-      }
-    }
-    await db.collection('announcements').doc(id).delete();
-    showToast("Deleted");
-  }catch(e){
-    showToast(e.message,"error");
-  }
 }
 </script>
 </body>
