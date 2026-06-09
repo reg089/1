@@ -86,12 +86,26 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 .attendance-row{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--bg3);flex-wrap:wrap;gap:8px}
 .attendance-actions{display:flex;gap:8px}
 .attendance-actions button{padding:6px 14px;width:auto;font-size:0.85rem}
+.book-card{background:var(--bg3);padding:16px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.book-info h4{color:var(--accent);margin-bottom:4px}
+.book-info p{color:var(--text2);font-size:0.85rem}
+.book-actions{display:flex;gap:8px}
+.book-actions button{width:auto;padding:8px 16px;font-size:0.85rem}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-content{background:var(--bg2);border-radius:var(--radius);width:100%;max-width:900px;height:90vh;display:flex;flex-direction:column}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--bg3)}
+.modal-body{flex:1;padding:0;overflow:hidden}
+.modal-close{background:var(--danger);border:none;color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer}
+.feedback-card{background:var(--bg3);padding:16px;border-radius:10px;margin-bottom:12px}
+.feedback-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.feedback-meta{font-size:0.75rem;color:var(--text2)}
+.feedback-msg{color:var(--text);white-space:pre-wrap}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:768px){
 .sidebar{left:-260px}
 .sidebar.show{left:0}
 .main{margin-left:0;padding:18px}
-.menu-toggle{display:block}
 }
 
 /* Billing Layout Styles - Scoped to #billingWrapper */
@@ -156,6 +170,19 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 <div class="overlay" id="overlay"></div>
 <div class="toast" id="toast"></div>
 
+<!-- BOOK READER MODAL -->
+<div class="modal" id="bookModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="bookTitle">Book Reader</h3>
+      <button class="modal-close" id="closeBookBtn">Close</button>
+    </div>
+    <div class="modal-body">
+      <iframe id="bookFrame" style="width:100%;height:100%;border:none;" oncontextmenu="return false;"></iframe>
+    </div>
+  </div>
+</div>
+
 <!-- LOGIN -->
 <div id="loginPage" class="container">
   <div class="card login-card">
@@ -192,6 +219,9 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
     <button class="nav-btn" data-page="teachers" id="teachersNav">👨🏫 Teachers</button>
     <button class="nav-btn" data-page="attendance" id="attendanceNav">📋 Attendance</button>
     <button class="nav-btn" id="feesNav" data-page="fees">💰 Fees</button>
+    <button class="nav-btn" id="libraryNav" data-page="library">📚 E-Library</button>
+    <button class="nav-btn" id="feedbackNav" data-page="feedback">💬 Feedback</button>
+    <button class="nav-btn" id="feedbacksAdminNav" data-page="feedbacksAdmin">📥 Feedbacks</button>
     <button class="nav-btn" id="aiNav" data-page="ai">🤖 AI Help</button>
     <hr style="border:none;border-top:1px solid var(--bg3);margin:16px 0">
     <button class="nav-btn" id="logoutBtn">🚪 Logout</button>
@@ -279,6 +309,53 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
       <div class="card">
         <h2>Attendance</h2>
         <div id="attendanceList"></div>
+      </div>
+    </div>
+
+    <!-- E-LIBRARY PAGE -->
+    <div id="library" class="page hidden">
+      <div class="card">
+        <h2 style="margin-bottom:16px">📚 E-Library</h2>
+        <p style="color:var(--text2);margin-bottom:16px">Read books online. Downloading is disabled.</p>
+        
+        <!-- ADMIN UPLOAD -->
+        <div id="libraryUploadForm" class="hidden" style="margin-bottom:20px;padding:16px;background:var(--bg3);border-radius:10px">
+          <h3 style="margin-bottom:12px;font-size:1rem">Upload New Book</h3>
+          <input id="bookTitle" placeholder="Book Title">
+          <input id="bookAuthor" placeholder="Author">
+          <input type="file" id="bookFile" accept=".pdf">
+          <button class="btn" id="uploadBookBtn">Upload Book</button>
+        </div>
+
+        <div id="bookList"></div>
+      </div>
+    </div>
+
+    <!-- FEEDBACK PAGE - FOR STUDENTS/TEACHERS -->
+    <div id="feedback" class="page hidden">
+      <div class="card">
+        <h2 style="margin-bottom:16px">💬 Send Feedback to Admin</h2>
+        <p style="color:var(--text2);margin-bottom:16px">Share your suggestions, issues, or questions with the administration.</p>
+        <textarea id="feedbackMsg" rows="6" placeholder="Type your feedback here..."></textarea>
+        <button class="btn" id="sendFeedbackBtn">Send Feedback</button>
+        
+        <h3 style="margin:24px 0 16px">Your Previous Feedback</h3>
+        <div id="myFeedbackList"></div>
+      </div>
+    </div>
+
+    <!-- FEEDBACKS ADMIN PAGE - FOR ADMIN ONLY -->
+    <div id="feedbacksAdmin" class="page hidden">
+      <div class="card">
+        <h2 style="margin-bottom:16px">📥 All Feedback Submissions</h2>
+        <div style="margin-bottom:16px">
+          <select id="feedbackFilter" style="width:auto;display:inline-block">
+            <option value="all">All Feedback</option>
+            <option value="student">Students Only</option>
+            <option value="teacher">Teachers Only</option>
+          </select>
+        </div>
+        <div id="allFeedbackList"></div>
       </div>
     </div>
 
@@ -387,6 +464,7 @@ const storage = firebase.storage();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 let currentUser = null;
+let currentUserName = '';
 let userRole = 'student';
 let unsubscribers = [];
 
@@ -396,6 +474,9 @@ let billingSearchQuery = "";
 let billingSelectedStudentId = null;
 let billingUnsub = null;
 let announcementUnsub = null;
+let libraryUnsub = null;
+let feedbackUnsub = null;
+let myFeedbackUnsub = null;
 
 document.addEventListener('DOMContentLoaded', ()=>{
   attachEvents();
@@ -407,7 +488,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 function attachEvents(){
   const get = id => document.getElementById(id);
-  
+
   get('staffLoginBtn')?.addEventListener('click', staffLogin);
   get('studentLoginBtn')?.addEventListener('click', studentLogin);
   get('logoutBtn')?.addEventListener('click', logout);
@@ -418,6 +499,10 @@ function attachEvents(){
   get('sendChatBtn')?.addEventListener('click', sendChat);
   get('sendStudentAnnBtn')?.addEventListener('click', ()=>sendAnnouncement('student'));
   get('sendTeacherAnnBtn')?.addEventListener('click', ()=>sendAnnouncement('teacher'));
+  get('uploadBookBtn')?.addEventListener('click', uploadBook);
+  get('closeBookBtn')?.addEventListener('click', closeBook);
+  get('sendFeedbackBtn')?.addEventListener('click', sendFeedback);
+  get('feedbackFilter')?.addEventListener('change', loadAllFeedbacks);
 
   get('chatInput')?.addEventListener('keypress', e=>{
     if(e.key === 'Enter'){ sendChat(); }
@@ -447,8 +532,8 @@ async function staffLogin(){
 
   try{
     document.getElementById('staffLoginBtn').innerHTML = '<span class="loading"></span> Checking...';
-    const correctPass = role === 'admin' ? ADMIN_PASS : TEACHER_PASS;
-    if(pass !== correctPass) throw new Error("Wrong password");
+    const correctPass = role === 'admin'? ADMIN_PASS : TEACHER_PASS;
+    if(pass!== correctPass) throw new Error("Wrong password");
 
     const cred = await auth.signInAnonymously();
     userRole = role;
@@ -484,12 +569,12 @@ async function studentLogin(){
     }
     localStorage.setItem('smartedu_uid',cred.user.uid);
     showApp(cred.user);
-    
+
     setTimeout(()=>{
       const aiBtn = document.getElementById('aiNav');
       if(aiBtn){ aiBtn.click(); }
     },500);
-    
+
   }catch(e){
     showToast(e.message,"error");
     document.getElementById('studentLoginBtn').textContent='Enter as Student';
@@ -503,14 +588,18 @@ async function showApp(user){
 
   const userDoc=await db.collection('users').doc(user.uid).get();
   userRole=userDoc.data().role;
+  currentUserName=userDoc.data().name;
 
-  document.getElementById("userEmail").textContent=userDoc.data().name;
+  document.getElementById("userEmail").textContent=currentUserName;
   document.getElementById("userBadge").textContent=userRole;
   document.getElementById("userBadge").className=`badge badge-${userRole}`;
 
   applyRolePermissions();
   loadData();
   loadAnnouncements();
+  loadLibrary();
+  if(userRole==='student'||userRole==='teacher') loadMyFeedbacks();
+  if(userRole==='admin') loadAllFeedbacks();
 }
 
 function showLogin(){
@@ -524,6 +613,9 @@ function logout(){
   unsubscribers.forEach(unsub=>unsub());
   if(billingUnsub)billingUnsub();
   if(announcementUnsub)announcementUnsub();
+  if(libraryUnsub)libraryUnsub();
+  if(feedbackUnsub)feedbackUnsub();
+  if(myFeedbackUnsub)myFeedbackUnsub();
   localStorage.removeItem('smartedu_uid');
   auth.signOut();
   showLogin();
@@ -553,21 +645,27 @@ function applyRolePermissions(){
   const isTeacher=userRole==='teacher';
 
   // Menu visibility
-  document.getElementById('feesNav').style.display=isTeacher?'none':'';
+  document.getElementById('feesNav').style.display=isStudent?'none':'';
   document.getElementById('teachersNav').style.display=isAdmin?'':'none';
   document.getElementById('studentsNav').style.display=isStudent?'none':'';
   document.getElementById('attendanceNav').style.display=isStudent?'none':'';
-  
+
+  // New nav items
+  document.getElementById('libraryNav').style.display=isStudent?'':'none';
+  document.getElementById('feedbackNav').style.display=(isStudent||isTeacher)?'':'none';
+  document.getElementById('feedbacksAdminNav').style.display=isAdmin?'':'none';
+
   // AI button visible for students only
   document.getElementById('aiNav').style.display=isStudent?'':'none';
-  
+
   // Forms visibility
   document.getElementById('studentForm').style.display=isStudent?'none':'';
   document.getElementById('teacherForm').style.display=isAdmin?'':'none';
   document.getElementById('actionHeader').style.display=isStudent?'none':'';
   document.getElementById('billingAddStudentForm').style.display=isAdmin?'':'none';
   document.getElementById('billingClearAllBtn').style.display=isAdmin?'':'none';
-  document.getElementById('adminAnnouncementControls').classList.toggle('hidden', !isAdmin);
+  document.getElementById('adminAnnouncementControls').classList.toggle('hidden',!isAdmin);
+  document.getElementById('libraryUploadForm').classList.toggle('hidden',!isAdmin);
 
   // Dashboard stats visibility: hide for teacher + student
   document.getElementById('statsGrid').style.display=(isStudent||isTeacher)?'none':'grid';
@@ -627,7 +725,7 @@ function loadData(){
       const d=doc.data();
       const date=d.createdAt?new Date(d.createdAt.toDate()).toLocaleDateString():'-';
       const actions=userRole==='admin'
-   ?`<td><button class="btn btn-danger" style="padding:6px 12px;font-size:0.85rem" onclick="deleteDoc('students','${doc.id}')">Delete</button></td>`
+  ?`<td><button class="btn btn-danger" style="padding:6px 12px;font-size:0.85rem" onclick="deleteDoc('students','${doc.id}')">Delete</button></td>`
       :'<td>-</td>';
       html+=`<tr><td>${d.name}</td><td>${d.class}</td><td>${date}</td>${actions}</tr>`;
     });
@@ -692,6 +790,202 @@ function showToast(msg,type='success'){
   toast.textContent=msg;
   toast.className=`toast show ${type==='error'?'error':''}`;
   setTimeout(()=>toast.classList.remove('show'),3000);
+}
+
+/* ================= E-LIBRARY MODULE ================= */
+
+function loadLibrary(){
+  if(libraryUnsub) libraryUnsub();
+
+  libraryUnsub = db.collection('library').orderBy('createdAt','desc').onSnapshot(snap=>{
+    let html = '';
+    if(snap.empty){
+      html = '<p style="color:var(--text2);text-align:center">No books available yet</p>';
+    }else{
+      snap.forEach(doc=>{
+        const d = doc.data();
+        const date = d.createdAt?new Date(d.createdAt.toDate()).toLocaleDateString():'-';
+        const deleteBtn = userRole==='admin'?`<button class="btn btn-danger" onclick="deleteBook('${doc.id}','${d.fileUrl}')">Delete</button>`:'';
+        html += `
+          <div class="book-card">
+            <div class="book-info">
+              <h4>${d.title}</h4>
+              <p>Author: ${d.author} | Added: ${date}</p>
+            </div>
+            <div class="book-actions">
+              <button class="btn btn-success" onclick="openBook('${d.fileUrl}','${d.title}')">Read</button>
+              ${deleteBtn}
+            </div>
+          </div>
+        `;
+      });
+    }
+    document.getElementById('bookList').innerHTML = html;
+  });
+}
+
+async function uploadBook(){
+  if(userRole!=='admin')return showToast("Admin only","error");
+
+  const title = document.getElementById('bookTitle').value.trim();
+  const author = document.getElementById('bookAuthor').value.trim();
+  const file = document.getElementById('bookFile').files[0];
+
+  if(!title||!author||!file)return showToast("Fill all fields and select PDF","error");
+  if(file.type!== 'application/pdf')return showToast("Only PDF files allowed","error");
+
+  const btn = document.getElementById('uploadBookBtn');
+  btn.innerHTML = '<span class="loading"></span> Uploading...';
+  btn.disabled = true;
+
+  try{
+    const fileRef = storage.ref(`library/${Date.now()}_${file.name}`);
+    const snapshot = await fileRef.put(file);
+    const url = await snapshot.ref.getDownloadURL();
+
+    await db.collection('library').add({
+      title,author,fileUrl:url,fileName:file.name,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy:currentUser.uid
+    });
+
+    document.getElementById('bookTitle').value='';
+    document.getElementById('bookAuthor').value='';
+    document.getElementById('bookFile').value='';
+    showToast("Book uploaded");
+  }catch(e){
+    showToast(e.message,"error");
+  }finally{
+    btn.textContent = 'Upload Book';
+    btn.disabled = false;
+  }
+}
+
+function openBook(url,title){
+  document.getElementById('bookTitle').textContent = title;
+  const frame = document.getElementById('bookFrame');
+  // Disable toolbar and download in PDF viewer
+  frame.src = url + '#toolbar=0&navpanes=0&scrollbar=0';
+  document.getElementById('bookModal').classList.add('show');
+}
+
+function closeBook(){
+  document.getElementById('bookModal').classList.remove('show');
+  document.getElementById('bookFrame').src = '';
+}
+
+async function deleteBook(id,fileUrl){
+  if(userRole!=='admin')return showToast("Admin only","error");
+  if(!confirm("Delete this book?"))return;
+
+  try{
+    await storage.refFromURL(fileUrl).delete();
+    await db.collection('library').doc(id).delete();
+    showToast("Book deleted");
+  }catch(e){
+    showToast(e.message,"error");
+  }
+}
+
+/* ================= FEEDBACK MODULE ================= */
+
+async function sendFeedback(){
+  const msg = document.getElementById('feedbackMsg').value.trim();
+  if(!msg)return showToast("Enter your feedback","error");
+
+  const btn = document.getElementById('sendFeedbackBtn');
+  btn.innerHTML = '<span class="loading"></span> Sending...';
+  btn.disabled = true;
+
+  try{
+    await db.collection('feedbacks').add({
+      message:msg,
+      senderName:currentUserName,
+      senderRole:userRole,
+      senderId:currentUser.uid,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('feedbackMsg').value='';
+    showToast("Feedback sent to admin");
+  }catch(e){
+    showToast(e.message,"error");
+  }finally{
+    btn.textContent = 'Send Feedback';
+    btn.disabled = false;
+  }
+}
+
+function loadMyFeedbacks(){
+  if(myFeedbackUnsub) myFeedbackUnsub();
+
+  myFeedbackUnsub = db.collection('feedbacks')
+   .where('senderId','==',currentUser.uid)
+   .orderBy('createdAt','desc')
+   .onSnapshot(snap=>{
+      let html = '';
+      if(snap.empty){
+        html = '<p style="color:var(--text2);text-align:center">No feedback sent yet</p>';
+      }else{
+        snap.forEach(doc=>{
+          const d = doc.data();
+          const date = d.createdAt?new Date(d.createdAt.toDate()).toLocaleString():'-';
+          html += `
+            <div class="feedback-card">
+              <div class="feedback-meta">Sent: ${date}</div>
+              <div class="feedback-msg">${d.message}</div>
+            </div>
+          `;
+        });
+      }
+      document.getElementById('myFeedbackList').innerHTML = html;
+    });
+}
+
+function loadAllFeedbacks(){
+  if(userRole!=='admin')return;
+  if(feedbackUnsub) feedbackUnsub();
+
+  const filter = document.getElementById('feedbackFilter')?.value || 'all';
+  let query = db.collection('feedbacks').orderBy('createdAt','desc');
+
+  feedbackUnsub = query.onSnapshot(snap=>{
+    let html = '';
+    if(snap.empty){
+      html = '<p style="color:var(--text2);text-align:center">No feedback received yet</p>';
+    }else{
+      snap.forEach(doc=>{
+        const d = doc.data();
+        if(filter!=='all' && d.senderRole!==filter) return;
+
+        const date = d.createdAt?new Date(d.createdAt.toDate()).toLocaleString():'-';
+        const roleBadge = d.senderRole==='student'
+         ?'<span class="badge badge-student">Student</span>'
+          :'<span class="badge badge-teacher">Teacher</span>';
+
+        html += `
+          <div class="feedback-card">
+            <div class="feedback-header">
+              <div>
+                <strong>${d.senderName}</strong> ${roleBadge}
+              </div>
+              <button class="btn btn-danger" style="padding:4px 10px;font-size:0.75rem;width:auto" onclick="deleteFeedback('${doc.id}')">Delete</button>
+            </div>
+            <div class="feedback-meta">Received: ${date}</div>
+            <div class="feedback-msg">${d.message}</div>
+          </div>
+        `;
+      });
+    }
+    if(html==='') html = '<p style="color:var(--text2);text-align:center">No feedback matching filter</p>';
+    document.getElementById('allFeedbackList').innerHTML = html;
+  });
+}
+
+async function deleteFeedback(id){
+  if(userRole!=='admin')return showToast("Admin only","error");
+  if(!confirm("Delete this feedback?"))return;
+  await db.collection('feedbacks').doc(id).delete();
+  showToast("Feedback deleted");
 }
 
 /* ================= BILLING MODULE ================= */
@@ -1045,7 +1339,7 @@ function loadAnnouncements(){
       snap.forEach(doc=>{
         const d = doc.data();
 
-        // ROLE FILTERING: Students=student only, Teachers=both, Admin=all
+        // ROLE FILTERING: Students see student only, Teachers see both, Admin sees all
         let showThis = false;
         if(userRole === 'admin') showThis = true;
         else if(userRole === 'teacher') showThis = true;
@@ -1058,14 +1352,14 @@ function loadAnnouncements(){
         if(d.files && d.files.length){
           filesHtml = '<div style="margin-top:8px">';
           d.files.forEach(f=>{
-            const icon = f.type.includes('pdf')?'📄':'🖼️';
+            const icon = f.type.includes('pdf')?'📄':'🖼';
             filesHtml += `<a href="${f.url}" target="_blank" class="announcement-file">${icon} ${f.name}</a>`;
           });
           filesHtml += '</div>';
         }
 
         const targetBadge = d.target === 'student'
-        ? '<span class="badge badge-student" style="margin-left:8px;font-size:0.7rem">Students</span>'
+       ? '<span class="badge badge-student" style="margin-left:8px;font-size:0.7rem">Students</span>'
           : '<span class="badge badge-teacher" style="margin-left:8px;font-size:0.7rem">Teachers</span>';
 
         html += `
