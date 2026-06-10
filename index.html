@@ -408,41 +408,46 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
     </div>
 
     <!-- AI PAGE -->
-    <div id="ai" class="page hidden">
-      <div class="card">
-        <h2 style="margin-bottom:10px">🤖 SmartEdu AI Assistant</h2>
-        <p style="color:var(--text2);margin-bottom:16px">
-          Ask any assignment or revision question.
-        </p>
-        <div class="chat-box" id="chatBox">
-          <div class="chat-msg ai">
-            👋 Hello Student! <br><br>
-            I can help you with:
-            <br>• Mathematics
-            <br>• English
-            <br>• ICT
-            <br>• Science
-            <br>• History
-            <br>• Assignments
-            <br>• Revision
-          </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <input id="chatInput" placeholder="Type your assignment question..." style="flex:1">
-          <button class="btn" id="sendChatBtn" style="width:auto;padding:12px 20px">Send</button>
-        </div>
+   <!-- AI PAGE -->
+<div id="ai" class="page hidden">
+  <div class="card">
+    <h2 style="margin-bottom:10px">🤖 SmartEdu AI Assistant</h2>
+
+    <p style="color:var(--text2);margin-bottom:16px">
+      Ask any assignment or revision question.
+    </p>
+
+    <div class="chat-box" id="chatBox">
+      <div class="chat-msg ai">
+        👋 Hello Student!
+        <br><br>
+
+        I can help you with:
+        <br>• Mathematics
+        <br>• English
+        <br>• ICT
+        <br>• Science
+        <br>• History
+        <br>• Assignments
+        <br>• Revision
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Book Reader Modal -->
-<div id="bookReader" class="book-reader-modal">
-  <div class="book-reader-content">
-    <div class="reader-header">
-      <span id="readerBookTitle">Book Title</span>
-      <button class="btn btn-danger" onclick="closeBookReader()">✕ Close</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input
+        id="chatInput"
+        placeholder="Type your assignment question..."
+        style="flex:1"
+      >
+
+      <button
+        class="btn"
+        id="sendChatBtn"
+        style="width:auto;padding:12px 20px"
+      >
+        Send
+      </button>
     </div>
-    <iframe id="bookFrame" class="book-frame" sandbox="allow-scripts allow-same-origin"></iframe>
   </div>
 </div>
 
@@ -899,94 +904,63 @@ document.addEventListener('contextmenu', e => {
 
 /* ================= FEEDBACK MODULE ================= */
 
-function loadFeedback() {
-  if(feedbackUnsub) feedbackUnsub();
+<!-- FEEDBACK PAGE -->
+<div id="feedback" class="page hidden">
+  <div class="card" id="feedbackFormCard">
+    <h2 style="margin-bottom:16px">💬 Send Feedback</h2>
+    <p style="color:var(--text2);margin-bottom:16px">
+      Share suggestions or report issues. Admin will receive your message.
+    </p>
 
-  feedbackUnsub = db.collection('feedback').orderBy('timestamp','desc').onSnapshot(snap => {
-    window.allFeedback = [];
-    snap.forEach(doc => {
-      window.allFeedback.push({id: doc.id,...doc.data()});
-    });
-    if(userRole === 'admin') renderFeedback('all');
-  });
-}
+    <form id="feedbackForm">
+      <select id="feedbackType" required>
+        <option value="">Select Category</option>
+        <option value="suggestion">Suggestion</option>
+        <option value="issue">Report an Issue</option>
+        <option value="library">E-Library Feedback</option>
+        <option value="other">Other</option>
+      </select>
 
-function renderFeedback(filter) {
-  const list = document.getElementById('feedbackList');
-  let filtered = window.allFeedback || [];
+      <textarea
+        id="feedbackMessage"
+        rows="5"
+        required
+        placeholder="Type your feedback here..."
+      ></textarea>
 
-  if(filter!== 'all') {
-    filtered = filtered.filter(f => f.role === filter);
-  }
+      <button class="btn" type="submit">
+        Send to Admin
+      </button>
+    </form>
+  </div>
 
-  if(filtered.length === 0) {
-    list.innerHTML = '<p style="color:var(--text2);text-align:center">No feedback yet</p>';
-    return;
-  }
+  <div class="card hidden" id="adminFeedbackView" style="margin-top:16px">
+    <h2 style="margin-bottom:16px">📥 Received Feedback</h2>
 
-  let html = '';
-  filtered.forEach(f => {
-    const date = f.timestamp? new Date(f.timestamp.toDate()).toLocaleString() : '-';
-    const badgeClass = f.role === 'teacher'? 'badge-teacher' : 'badge-student';
-    html += `
-      <div class="feedback-card">
-        <h4>${f.userName} <span class="badge ${badgeClass}">${f.role}</span></h4>
-        <div class="feedback-meta">Category: ${f.type} | ${date}</div>
-        <p>${f.message}</p>
-        <div class="feedback-actions">
-          ${f.resolved? '<span style="color:var(--accent2)">✓ Resolved</span>' :
-            `<button class="btn btn-success" onclick="markFeedbackResolved('${f.id}')">Mark Resolved</button>`}
-          <button class="btn btn-danger" onclick="deleteFeedback('${f.id}')">Delete</button>
-        </div>
-      </div>
-    `;
-  });
-  list.innerHTML = html;
-}
+    <div style="margin-bottom:16px">
+      <button class="btn btn-secondary"
+              onclick="filterFeedback('all')"
+              style="width:auto;margin-right:8px">
+        All
+      </button>
 
-function filterFeedback(role) {
-  renderFeedback(role);
-}
+      <button class="btn btn-secondary"
+              onclick="filterFeedback('student')"
+              style="width:auto;margin-right:8px">
+        Students
+      </button>
 
-async function submitFeedback(e) {
-  e.preventDefault();
-  if(userRole === 'admin') return showToast("Admins can't submit feedback", "error");
+      <button class="btn btn-secondary"
+              onclick="filterFeedback('teacher')"
+              style="width:auto">
+        Teachers
+      </button>
+    </div>
 
-  const type = document.getElementById('feedbackType').value;
-  const message = document.getElementById('feedbackMessage').value.trim();
-  if(!type ||!message) return showToast("Fill all fields", "error");
-
-  try {
-    await db.collection('feedback').add({
-      role: userRole,
-      userId: currentUser.uid,
-      userName: userName,
-      type: type,
-      message: message,
-      resolved: false,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    document.getElementById('feedbackForm').reset();
-    showToast("Feedback sent to admin");
-  } catch(e) {
-    showToast(e.message, "error");
-  }
-}
-
-async function markFeedbackResolved(id) {
-  if(userRole!== 'admin') return;
-  await db.collection('feedback').doc(id).update({resolved: true});
-  showToast("Marked as resolved");
-}
-
-async function deleteFeedback(id) {
-  if(userRole!== 'admin') return showToast("Admin only", "error");
-  if(!confirm("Delete this feedback?")) return;
-  await db.collection('feedback').doc(id).delete();
-  showToast("Feedback deleted");
-}
-
-/* ================= BILLING MODULE - ADMIN ONLY ================= */
+    <div id="feedbackList"></div>
+  </div>
+</div>
+                /* ================= BILLING MODULE - ADMIN ONLY ================= */
 
 function initBilling(){
   if(billingUnsub) billingUnsub();
@@ -1440,6 +1414,27 @@ async function deleteAnnouncement(id){
   }catch(e){
     showToast(e.message,"error");
   }
+}
+  function loadFeedback() {
+  if (feedbackUnsub) feedbackUnsub();
+
+  feedbackUnsub = db.collection('feedback')
+    .orderBy('timestamp', 'desc')
+    .onSnapshot(snap => {
+
+      window.allFeedback = [];
+
+      snap.forEach(doc => {
+        window.allFeedback.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+
+      if (userRole === 'admin') {
+        renderFeedback('all');
+      }
+    });
 }
 </script>
 </body>
