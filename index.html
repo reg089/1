@@ -13,25 +13,25 @@
 
 <style>
 :root{
-  --bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#e2e8f0;--text2:#94a3b8;
+  --bg:#E9ECAC;--bg2:#368ED6;--bg3:#92D1DE;--text:#0A1C20;--text2:#0A1C20;
   --accent:#38bdf8;--accent2:#10b981;--danger:#ef4444;--warning:#f59e0b;
-  --radius:12px;--shadow:0 8px 24px rgba(0,0,0,0.3)
+  --radius:22px;--shadow:0 8px 24px rgba(0,0,0,0.3)
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:var(--bg);color:var(--text);min-height:100vh}
+body{background:var(--bg);color:#0A1C20;min-height:100vh}
 .hidden{display:none!important}
 .container{max-width:1100px;margin:auto;padding:20px;min-height:100vh;display:flex;align-items:center;justify-content:center}
 .card{background:var(--bg2);padding:28px;border-radius:var(--radius);box-shadow:var(--shadow)}
 .login-card{width:100%;max-width:420px}
 input,select,button,textarea{
   width:100%;padding:12px 16px;margin:8px 0;border-radius:10px;
-  border:1px solid var(--bg3);background:var(--bg3);color:var(--text);
-  font-size:16px;outline:none;transition:0.2s
+  border:1px solid var(--bg3);background:var(--bg3);color:#0A1C20;
+  font-size:20px;outline:none;transition:0.2s
 }
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(56,189,248,0.2)}
 .btn{background:var(--accent);color:#000;font-weight:600;cursor:pointer;border:none}
 .btn:hover{opacity:0.9;transform:translateY(-1px)}
-.btn-secondary{background:var(--bg3);color:var(--text)}
+.btn-secondary{background:var(--bg3);color:#0A1C20}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-success{background:var(--accent2);color:#fff}
 .sidebar{
@@ -115,6 +115,61 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 .main{margin-left:0;padding:18px}
 .menu-toggle{display:block}
 }
+#billingWrapper *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,'Segoe UI','Inter','Roboto',sans-serif}
+#billingWrapper{color:#0f172a}
+#billingWrapper .container{max-width:1500px;margin:0 auto;display:block}
+#billingWrapper .header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.8rem}
+#billingWrapper h1{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#14532d,#1e3a8a);background-clip:text;-webkit-background-clip:text;color:transparent;display:flex;align-items:center;gap:8px}
+#billingWrapper .action-buttons{display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center}
+#billingWrapper .sync-status{font-size:0.8rem;color:#14532d;font-weight:500}
+#billingWrapper button{background:white;border:1px solid #e2e8f0;padding:0.5rem 1rem;border-radius:40px;font-weight:500;font-size:0.85rem;cursor:pointer;transition:all 0.15s ease;color:#0f172a}
+#billingWrapper button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+#billingWrapper button.primary{background:#14532d;color:white;border:none;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+#billingWrapper button.primary:hover{background:#166534}
+#billingWrapper button.danger{background:#fee2e2;color:#b91c1c;border-color:#fecaca}
+#billingWrapper button.danger:hover{background:#fecaca}
+#billingWrapper button.outline{background:transparent;border:1px solid #cbd5e1}
+#billingWrapper .summary-cards{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem}
+#billingWrapper .card{background:white;border-radius:24px;padding:1.2rem 1.8rem;flex:1;min-width:180px;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid #e2edf2}
+#billingWrapper .card h3{font-size:0.8rem;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:#2d4a22;margin-bottom:0.5rem}
+#billingWrapper .card .amount{font-size:1.8rem;font-weight:700;color:#0f172a}
+#billingWrapper .dashboard{display:flex;flex-wrap:wrap;gap:1.8rem}
+#billingWrapper .students-panel{flex:1.2;min-width:300px;background:white;border-radius:28px;padding:1.2rem;border:1px solid #e2edf2;box-shadow:0 8px 20px rgba(0,0,0,0.02);height:fit-content}
+#billingWrapper .detail-panel{flex:2.5;min-width:340px;background:white;border-radius:28px;padding:1.2rem 1.5rem;border:1px solid #e2edf2}
+#billingWrapper .panel-title{font-size:1.2rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;border-left:4px solid #14532d;padding-left:0.75rem;color:#0f172a}
+#billingWrapper .search-box{margin-bottom:1.2rem;width:100%}
+#billingWrapper .search-box input{width:100%;padding:0.7rem 1rem;border-radius:40px;border:1px solid #cbd5e1;font-size:0.85rem;background:#ffffff;outline:none;color:#0f172a}
+#billingWrapper .search-box input:focus{border-color:#14532d;box-shadow:0 0 0 3px rgba(20,83,45,0.15)}
+#billingWrapper .student-list{display:flex;flex-direction:column;gap:0.7rem;max-height:55vh;overflow-y:auto;padding-right:4px}
+#billingWrapper .student-item{background:#fafcff;border-radius:20px;padding:0.7rem;display:flex;align-items:center;gap:12px;border:1px solid #e9edf2;cursor:pointer;transition:all 0.15s}
+#billingWrapper .student-item:hover{background:#f1f5f9}
+#billingWrapper .student-item.selected{background:#eef4ea;border-left:5px solid #14532d}
+#billingWrapper .student-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#e4e9f0;flex-shrink:0;border:1px solid #cfdec5}
+#billingWrapper .student-info{flex:1}
+#billingWrapper .student-info h4{font-size:0.95rem;font-weight:600;color:#0f172a}
+#billingWrapper .student-info p{font-size:0.7rem;color:#4a5b3c}
+#billingWrapper .balance-badge{font-weight:700;font-size:0.8rem;background:white;padding:0.2rem 0.6rem;border-radius:30px;white-space:nowrap;color:#0f172a}
+#billingWrapper .form-row{display:flex;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;align-items:flex-end}
+#billingWrapper .form-group{flex:1;min-width:120px}
+#billingWrapper label{font-size:0.7rem;font-weight:500;text-transform:uppercase;color:#2b4b1e;display:block}
+#billingWrapper input,#billingWrapper select{width:100%;padding:0.6rem 0.8rem;border-radius:16px;border:1px solid #cbd5e1;background:white;font-size:0.85rem;margin-top:4px;color:#0f172a}
+#billingWrapper input:focus,#billingWrapper select:focus{outline:none;border-color:#14532d;box-shadow:0 0 0 3px rgba(20,83,45,0.15)}
+#billingWrapper .fee-table,#billingWrapper .payment-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:0.5rem}
+#billingWrapper .fee-table th,#billingWrapper .payment-table th{text-align:left;padding:0.5rem 0.2rem;border-bottom:1px solid #e2e8f0;color:#2b4b1e}
+#billingWrapper .fee-table td,#billingWrapper .payment-table td{padding:0.6rem 0.2rem;border-bottom:1px solid #f1f5f9;color:#0f172a}
+#billingWrapper .delete-icon{color:#b91c1c;cursor:pointer;background:none;border:none;font-size:1.2rem}
+#billingWrapper .delete-icon:hover{color:#dc2626}
+#billingWrapper .empty-message{color:#8ba17a;font-size:0.8rem;padding:1rem 0;text-align:center}
+#billingWrapper hr{margin:1rem 0;border-color:#e2edf2}
+#billingWrapper .notification{position:fixed;bottom:20px;right:20px;background:#1e293b;color:white;padding:0.6rem 1.2rem;border-radius:40px;font-size:0.8rem;z-index:1000;opacity:0;transition:0.2s;pointer-events:none}
+#billingWrapper .method-mtn{background:#ffe6cc;color:#cc7b00;padding:2px 8px;border-radius:30px;font-size:0.7rem}
+#billingWrapper .method-airtel{background:#ffe0f0;color:#b3005e;padding:2px 8px;border-radius:30px;font-size:0.7rem}
+#billingWrapper .method-cash{background:#e0f2e9;color:#0e6b3e;padding:2px 8px;border-radius:30px;font-size:0.7rem}
+#billingWrapper .method-bank{background:#e6f0fa;color:#0066b3;padding:2px 8px;border-radius:30px;font-size:0.7rem}
+@media print{
+  #billingWrapper .action-buttons,#billingWrapper .students-panel,#billingWrapper .search-box,#billingWrapper .summary-cards,#billingWrapper .notification{display:none!important}
+}
+
 </style>
 </head>
 
@@ -125,8 +180,8 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 <!-- LOGIN -->
 <div id="loginPage" class="container">
   <div class="card login-card">
-    <h2 style="margin-bottom:8px">SmartEdu Enterprise</h2>
-    <p style="color:var(--text2);margin-bottom:20px;font-size:0.9rem">School Management System</p>
+    <h2 style="margin-bottom:8px;font-size:2rem">X HIGH SCHOOL</h2>
+    <p style="color:var(--text2);margin-bottom:20px;font-size:1.2rem">School Management System</p>
 
     <div id="staffLogin">
       <select id="staffRole">
@@ -142,7 +197,7 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
     <div id="studentLogin">
       <input id="studentName" type="text" placeholder="Enter your name">
       <button class="btn btn-secondary" id="studentLoginBtn">Enter as Student</button>
-      <p style="color:var(--text2);font-size:0.8rem;margin-top:8px">No password needed</p>
+      <p style="color:var(--text2);font-size:1rem;margin-top:8px">No password needed for students</p>
     </div>
   </div>
 </div>
@@ -157,6 +212,8 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
     <button class="nav-btn" data-page="students" id="studentsNav">👨🎓 Students</button>
     <button class="nav-btn" data-page="teachers" id="teachersNav">👨🏫 Teachers</button>
     <button class="nav-btn" data-page="attendance" id="attendanceNav">📋 Attendance</button>
+ <button class="nav-btn" id="feesNav" data-page="fees">💰 Fees</button>
+
     <button class="nav-btn" id="elibraryNav" data-page="elibrary">📚 E-Library</button>
     <button class="nav-btn" id="feedbackNav" data-page="feedback">💬 Feedback</button>
     <button class="nav-btn" id="aiNav" data-page="ai">🤖 AI Help</button>
@@ -846,6 +903,289 @@ async function deleteFeedback(id) {
   await db.collection('feedback').doc(id).delete();
   showToast("Feedback deleted");
 }
+
+function initBilling(){
+  if(billingUnsub) billingUnsub();
+
+  billingUnsub = db.collection('students').onSnapshot(studentSnap=>{
+    let students = studentSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+    db.collection('fees').onSnapshot(feeSnap=>{
+      let fees = feeSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+      billingSchoolData.students = students.map(s=>{
+        let studentFees = fees.filter(f=>f.studentId===s.id && f.type==='fee');
+        let studentPayments = fees.filter(f=>f.studentId===s.id && f.type==='payment');
+        return {
+          id: s.id,
+          name: s.name,
+          className: s.class || '',
+          photo: s.photo || getDefaultAvatar(s.name),
+          fees: studentFees.map(f=>({id:f.id, description:f.description, amount:f.amount, date:f.date})),
+          payments: studentPayments.map(p=>({id:p.id, amount:p.amount, method:p.method, date:p.date, note:p.note}))
+        }
+      });
+
+      document.getElementById('billingSyncStatus').textContent = "☁ Synced";
+      billingUpdateSummary();
+      billingRenderStudentList();
+      if(billingSelectedStudentId) billingSelectStudent(billingSelectedStudentId);
+    });
+  });
+}
+
+function formatUGX(amount) {
+  return 'UGX ' + Number(amount).toLocaleString('en-UG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function getDefaultAvatar(name = "Student") {
+  const initial = name? name.charAt(0).toUpperCase() : 'S';
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23cbd5a0'/%3E%3Ctext x='50' y='67' font-size='44' text-anchor='middle' fill='%233b5e2b' font-weight='bold'%3E${initial}%3C/text%3E%3C/svg%3E`;
+}
+
+function billingTotalFeesAmount(student) {
+  return student.fees.reduce((sum, f) => sum + Number(f.amount||0), 0);
+}
+
+function billingTotalPaymentsAmount(student) {
+  return student.payments.reduce((sum, p) => sum + Number(p.amount||0), 0);
+}
+
+function billingGetBalance(student) {
+  return billingTotalFeesAmount(student) - billingTotalPaymentsAmount(student);
+}
+
+function billingUpdateSummary() {
+  let collected = 0, pending = 0;
+  billingSchoolData.students.forEach(s => {
+    collected += billingTotalPaymentsAmount(s);
+    pending += billingGetBalance(s);
+  });
+  document.getElementById('billingTotalCollected').innerHTML = formatUGX(collected);
+  document.getElementById('billingTotalPending').innerHTML = formatUGX(pending);
+  document.getElementById('billingStudentCount').innerText = billingSchoolData.students.length;
+}
+
+function billingFilterStudents() {
+  if (!billingSearchQuery.trim()) return billingSchoolData.students;
+  const q = billingSearchQuery.trim().toLowerCase();
+  return billingSchoolData.students.filter(s =>
+    s.name.toLowerCase().includes(q) || s.className.toLowerCase().includes(q)
+  );
+}
+
+function billingRenderStudentList() {
+  const container = document.getElementById('billingStudentListContainer');
+  const filtered = billingFilterStudents();
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty-message">No matching students.<br>Adjust search or add new.</div>';
+    return;
+  }
+  container.innerHTML = '';
+  filtered.forEach(student => {
+    const balance = billingGetBalance(student);
+    const div = document.createElement('div');
+    div.className = `student-item ${billingSelectedStudentId === student.id? 'selected' : ''}`;
+    div.innerHTML = `
+      <img class="student-avatar" src="${student.photo}" onerror="this.src='${getDefaultAvatar(student.name)}'">
+      <div class="student-info"><h4>${student.name}</h4><p>${student.className}</p></div>
+      <div class="balance-badge">${formatUGX(balance)}</div>
+    `;
+    div.onclick = () => billingSelectStudent(student.id);
+    container.appendChild(div);
+  });
+}
+
+function billingSelectStudent(id) {
+  billingSelectedStudentId = id;
+  billingRenderStudentList();
+  const student = billingSchoolData.students.find(s => s.id === id);
+  if (!student) return;
+
+  document.getElementById('billingSelectedStudentView').innerHTML = `
+    <div style="font-weight:600;font-size:1.1rem;">${student.name} - ${student.className}</div>
+    <div style="margin:1rem 0;">Balance: <strong>${formatUGX(billingGetBalance(student))}</strong></div>
+
+    <h4>Fees</h4>
+    <table class="fee-table">
+    <thead><tr><th>Description</th><th>Amount</th><th>Date</th><th></th></tr></thead>
+    <tbody>${student.fees.map(f => `
+      <tr>
+        <td>${f.description}</td>
+        <td>${formatUGX(f.amount)}</td>
+        <td>${f.date}</td>
+        <td>${userRole==='admin'?`<button class="delete-icon" onclick="billingDeleteFee('${student.id}','${f.id}')">×</button>`:''}</td>
+      </tr>`).join('') || '<tr><td colspan="4" class="empty-message">No fees</td></tr>'}
+    </tbody>
+    </table>
+
+    ${userRole==='admin'?`
+    <div class="form-row" style="margin-top:1rem;">
+      <div class="form-group"><label>Description</label><input type="text" id="billingFeeDesc"></div>
+      <div class="form-group"><label>Amount</label><input type="number" id="billingFeeAmount"></div>
+      <div class="form-group"><label>Date</label><input type="date" id="billingFeeDate"></div>
+      <div><button class="primary" onclick="billingAddFee('${student.id}')" style="margin-top:1.4rem;">Add Fee</button></div>
+    </div>`:''}
+
+    <hr>
+
+    <h4>Payments</h4>
+    <table class="payment-table">
+    <thead><tr><th>Amount</th><th>Method</th><th>Date</th><th>Note</th><th></th></tr></thead>
+    <tbody>${student.payments.map(p => `
+      <tr>
+        <td>${formatUGX(p.amount)}</td>
+        <td><span class="method-${p.method || 'cash'}">${(p.method || 'cash').toUpperCase()}</span></td>
+        <td>${p.date}</td>
+        <td>${p.note||''}</td>
+        <td>${userRole==='admin'?`<button class="delete-icon" onclick="billingDeletePayment('${student.id}','${p.id}')">×</button>`:''}</td>
+      </tr>`).join('') || '<tr><td colspan="5" class="empty-message">No payments</td></tr>'}
+    </tbody>
+    </table>
+
+    ${userRole==='admin'?`
+    <div class="form-row" style="margin-top:1rem;">
+      <div class="form-group"><label>Amount</label><input type="number" id="billingPayAmount"></div>
+      <div class="form-group"><label>Method</label><select id="billingPayMethod">
+        <option value="cash">Cash</option>
+        <option value="mtn">MTN</option>
+        <option value="airtel">Airtel</option>
+        <option value="bank">Bank</option>
+      </select></div>
+      <div class="form-group"><label>Date</label><input type="date" id="billingPayDate"></div>
+      <div class="form-group"><label>Note</label><input type="text" id="billingPayNote"></div>
+      <div><button class="primary" onclick="billingAddPayment('${student.id}')" style="margin-top:1.4rem;">Add Payment</button></div>
+    </div>`:''}
+  `;
+}
+
+async function billingAddStudent() {
+  if(userRole!=='admin') return;
+  const name = document.getElementById('billingStudentName').value.trim();
+  const className = document.getElementById('billingStudentClass').value.trim();
+  if (!name ||!className) return billingShowNotification('Fill all fields');
+
+  await db.collection("students").add({
+    name,class:className, uid: currentUser.uid,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+    createdBy:currentUser.uid
+  });
+  document.getElementById('billingStudentName').value = '';
+  document.getElementById('billingStudentClass').value = '';
+  billingShowNotification('Student added');
+}
+
+async function billingAddFee(sid) {
+  const desc = document.getElementById('billingFeeDesc').value.trim();
+  const amt = parseFloat(document.getElementById('billingFeeAmount').value);
+  const date = document.getElementById('billingFeeDate').value;
+  if (!desc ||!amt ||!date) return billingShowNotification('Fill all fields');
+
+  await db.collection("fees").add({
+    studentId:sid, type:'fee', description:desc, amount:amt, date,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+  billingShowNotification('Fee added');
+}
+
+async function billingAddPayment(sid) {
+  const amt = parseFloat(document.getElementById('billingPayAmount').value);
+  const method = document.getElementById('billingPayMethod').value;
+  const date = document.getElementById('billingPayDate').value;
+  const note = document.getElementById('billingPayNote').value.trim();
+  if (!amt ||!date) return billingShowNotification('Fill amount and date');
+
+  await db.collection("fees").add({
+    studentId:sid, type:'payment', amount:amt, method, date, note,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+  billingShowNotification('Payment added');
+}
+
+async function billingDeleteFee(sid, fid) {
+  if(userRole!=='admin') return;
+  await db.collection("fees").doc(fid).delete();
+  billingShowNotification('Fee deleted');
+}
+
+async function billingDeletePayment(sid, pid) {
+  if(userRole!=='admin') return;
+  await db.collection("fees").doc(pid).delete();
+  billingShowNotification('Payment deleted');
+}
+
+function billingShowNotification(msg) {
+  const toast = document.getElementById('billingNotificationToast');
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => toast.style.opacity = '0', 2000);
+}
+
+async function billingClearAll(){
+  if(userRole!=='admin') return;
+  if(!confirm('Clear all fee records? This cannot be undone.')) return;
+
+  let batch = db.batch();
+  let feesSnap = await db.collection('fees').get();
+  feesSnap.forEach(d=>batch.delete(d.ref));
+  await batch.commit();
+  billingShowNotification('All fees cleared');
+}
+
+function billingExportExcel(){
+  let data = [['Student','Class','Fee/Payment','Description','Amount','Method','Date','Note']];
+
+  billingSchoolData.students.forEach(s=>{
+    s.fees.forEach(f=>{
+      data.push([s.name,s.className,'Fee',f.description,f.amount,'',f.date,'']);
+    });
+    s.payments.forEach(p=>{
+      data.push([s.name,s.className,'Payment','',p.amount,p.method,p.date,p.note||'']);
+    });
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Billing');
+  XLSX.writeFile(wb, 'SmartEdu_Billing_Report.xlsx');
+}
+
+function billingImportExcel(e){
+  const file = e.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, {type:'array'});
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet);
+
+    let batch = db.batch();
+    rows.forEach(row=>{
+      if(row.Student){
+        const student = billingSchoolData.students.find(s=>s.name===row.Student);
+        if(student && row.Amount){
+          batch.set(db.collection('fees').doc(), {
+            studentId:student.id,
+            type:row['Fee/Payment']==='Payment'?'payment':'fee',
+            description:row.Description||'Imported',
+            amount:Number(row.Amount),
+            method:row.Method||'cash',
+            date:row.Date||new Date().toISOString().split('T')[0],
+            note:row.Note||'',
+            createdAt:firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      }
+    });
+
+    await batch.commit();
+    billingShowNotification('Excel imported successfully');
+  };
+  reader.readAsArrayBuffer(file);
+}
+
 
 /* ===================== SMART AI CHAT ===================== */
 
