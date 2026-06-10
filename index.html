@@ -353,6 +353,58 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
       </div>
     </div>
 
+ <div id="fees" class="page hidden">
+      <div id="billingWrapper" style="background:#f0f3f8;padding:1.5rem;margin:-28px;border-radius:12px;min-height:calc(100vh - 120px)">
+        <div class="container" id="billingContainer">
+          <div class="header">
+            <h1>📚 SmartEdu Billing System <span style="font-size:1rem">🇺🇬 UGX</span></h1>
+            <div class="action-buttons">
+              <span id="billingSyncStatus" class="sync-status">☁ Connecting...</span>
+              <input type="file" id="billingExcelFile" accept=".xlsx,.xls" hidden>
+              <button id="billingImportBtn">📁 Import Excel</button>
+              <button id="billingExportExcelBtn" class="outline">📊 Export Excel</button>
+              <button id="billingPrintBtn" class="outline">🖨 Print Report</button>
+              <button id="billingClearAllBtn" class="danger">🗑 Clear All</button>
+            </div>
+          </div>
+
+          <div class="summary-cards">
+            <div class="card"><h3>💰 Total Collected (UGX)</h3><div class="amount" id="billingTotalCollected">UGX 0</div></div>
+            <div class="card"><h3>📌 Total Pending (UGX)</h3><div class="amount" id="billingTotalPending">UGX 0</div></div>
+            <div class="card"><h3>🎓 Active Students</h3><div class="amount" id="billingStudentCount">0</div></div>
+          </div>
+
+          <div class="dashboard">
+            <div class="students-panel">
+              <div class="panel-title">👥 Students</div>
+              <div class="search-box">
+                <input type="text" id="billingSearchStudentInput" placeholder="🔍 Search by name or class..." autocomplete="off">
+              </div>
+              <div id="billingStudentListContainer" class="student-list"></div>
+              <hr>
+              <div style="margin-top:1rem" id="billingAddStudentForm">
+                <div style="font-weight:500;margin-bottom:0.5rem">➕ Add New Student</div>
+                <div class="form-row">
+                  <div class="form-group"><label>Full Name</label><input type="text" id="billingStudentName" placeholder="e.g., Nakato Grace"></div>
+                  <div class="form-group"><label>Class / Grade</label><input type="text" id="billingStudentClass" placeholder="Senior 2"></div>
+                  <div style="flex:0.3">
+                    <button id="billingAddStudentBtn" class="primary" style="width:100%;margin-top:1.4rem">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-panel" id="billingDetailPanel">
+              <div class="panel-title">📋 Student Profile & Billing</div>
+              <div id="billingSelectedStudentView">
+                <div class="empty-message" style="padding:2rem">👈 Select a student from the list to manage fees, payments</div>
+              </div>
+            </div>
+          </div>
+        <div id="billingNotificationToast" class="notification">✅ Action completed</div>
+      </div>
+    </div>
+
     <!-- AI PAGE -->
     <div id="ai" class="page hidden">
       <div class="card">
