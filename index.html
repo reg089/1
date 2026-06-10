@@ -181,8 +181,8 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 <!-- LOGIN -->
 <div id="loginPage" class="container">
   <div class="card login-card">
-    <h2 style="margin-bottom:8px">SmartEdu Enterprise</h2>
-    <p style="color:var(--text2);margin-bottom:20px;font-size:0.9rem">School Management System</p>
+    <h2 style="margin-bottom:8px;font-size:2rem">X HIGH SCHOOL</h2>
+    <p style="color:var(--text2);margin-bottom:20px;font-size:1.2rem">School Management System</p>
 
     <div id="staffLogin">
       <select id="staffRole">
@@ -198,7 +198,7 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
     <div id="studentLogin">
       <input id="studentName" type="text" placeholder="Enter your name">
       <button class="btn btn-secondary" id="studentLoginBtn">Enter as Student</button>
-      <p style="color:var(--text2);font-size:0.8rem;margin-top:8px">No password needed</p>
+      <p style="color:var(--text2);font-size:1rem;margin-top:8px">No password needed for students</p>
     </div>
   </div>
 </div>
@@ -408,7 +408,7 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
     </div>
 
     <!-- AI PAGE -->
- <div id="ai" class="page hidden">
+    <div id="ai" class="page hidden">
       <div class="card">
         <h2 style="margin-bottom:10px">🤖 SmartEdu AI Assistant</h2>
         <p style="color:var(--text2);margin-bottom:16px">
@@ -426,7 +426,6 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
             <br>• Assignments
             <br>• Revision
           </div>
-        </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <input id="chatInput" placeholder="Type your assignment question..." style="flex:1">
           <button class="btn" id="sendChatBtn" style="width:auto;padding:12px 20px">Send</button>
@@ -518,13 +517,13 @@ function attachEvents(){
   // BILLING EVENTS
   get('billingAddStudentBtn')?.addEventListener('click', billingAddStudent);
   get('billingSearchStudentInput')?.addEventListener('input', e => {
-    billingSearchQuery = e.target.value;
+
+ billingSearchQuery = e.target.value;
     billingRenderStudentList();
-  });
+});
   get('billingImportBtn')?.addEventListener('click', ()=>get('billingExcelFile').click());
   get('billingPrintBtn')?.addEventListener('click', ()=>window.print());
-
-get('billingExportExcelBtn')?.addEventListener('click', billingExportExcel);
+  get('billingExportExcelBtn')?.addEventListener('click', billingExportExcel);
   get('billingClearAllBtn')?.addEventListener('click', billingClearAll);
   get('billingExcelFile')?.addEventListener('change', billingImportExcel);
 }
@@ -902,11 +901,11 @@ document.addEventListener('contextmenu', e => {
 
 function loadFeedback() {
   if(feedbackUnsub) feedbackUnsub();
-  
+
   feedbackUnsub = db.collection('feedback').orderBy('timestamp','desc').onSnapshot(snap => {
     window.allFeedback = [];
     snap.forEach(doc => {
-      window.allFeedback.push({id: doc.id, ...doc.data()});
+      window.allFeedback.push({id: doc.id,...doc.data()});
     });
     if(userRole === 'admin') renderFeedback('all');
   });
@@ -915,8 +914,8 @@ function loadFeedback() {
 function renderFeedback(filter) {
   const list = document.getElementById('feedbackList');
   let filtered = window.allFeedback || [];
-  
-  if(filter !== 'all') {
+
+  if(filter!== 'all') {
     filtered = filtered.filter(f => f.role === filter);
   }
 
@@ -927,15 +926,15 @@ function renderFeedback(filter) {
 
   let html = '';
   filtered.forEach(f => {
-    const date = f.timestamp ? new Date(f.timestamp.toDate()).toLocaleString() : '-';
-    const badgeClass = f.role === 'teacher' ? 'badge-teacher' : 'badge-student';
+    const date = f.timestamp? new Date(f.timestamp.toDate()).toLocaleString() : '-';
+    const badgeClass = f.role === 'teacher'? 'badge-teacher' : 'badge-student';
     html += `
       <div class="feedback-card">
         <h4>${f.userName} <span class="badge ${badgeClass}">${f.role}</span></h4>
         <div class="feedback-meta">Category: ${f.type} | ${date}</div>
         <p>${f.message}</p>
         <div class="feedback-actions">
-          ${f.resolved ? '<span style="color:var(--accent2)">✓ Resolved</span>' : 
+          ${f.resolved? '<span style="color:var(--accent2)">✓ Resolved</span>' :
             `<button class="btn btn-success" onclick="markFeedbackResolved('${f.id}')">Mark Resolved</button>`}
           <button class="btn btn-danger" onclick="deleteFeedback('${f.id}')">Delete</button>
         </div>
@@ -955,7 +954,7 @@ async function submitFeedback(e) {
 
   const type = document.getElementById('feedbackType').value;
   const message = document.getElementById('feedbackMessage').value.trim();
-  if(!type || !message) return showToast("Fill all fields", "error");
+  if(!type ||!message) return showToast("Fill all fields", "error");
 
   try {
     await db.collection('feedback').add({
@@ -975,17 +974,18 @@ async function submitFeedback(e) {
 }
 
 async function markFeedbackResolved(id) {
-  if(userRole !== 'admin') return;
+  if(userRole!== 'admin') return;
   await db.collection('feedback').doc(id).update({resolved: true});
   showToast("Marked as resolved");
 }
 
 async function deleteFeedback(id) {
-  if(userRole !== 'admin') return showToast("Admin only", "error");
+  if(userRole!== 'admin') return showToast("Admin only", "error");
   if(!confirm("Delete this feedback?")) return;
   await db.collection('feedback').doc(id).delete();
   showToast("Feedback deleted");
 }
+
 /* ================= BILLING MODULE - ADMIN ONLY ================= */
 
 function initBilling(){
@@ -1346,6 +1346,7 @@ function loadAnnouncements(){
 
         const date = d.createdAt?new Date(d.createdAt.toDate()).toLocaleString():'-';
         let filesHtml = '';
+
         if(d.files && d.files.length){
           filesHtml = '<div style="margin-top:8px">';
           d.files.forEach(f=>{
@@ -1356,10 +1357,10 @@ function loadAnnouncements(){
         }
 
         const targetBadge = d.target === 'student'
-     ? '<span class="badge badge-student" style="margin-left:8px;font-size:0.7rem">Students</span>'
+       ? '<span class="badge badge-student" style="margin-left:8px;font-size:0.7rem">Students</span>'
           : '<span class="badge badge-teacher" style="margin-left:8px;font-size:0.7rem">Teachers</span>';
 
-html += `
+        html += `
           <div class="announcement-card">
             ${userRole==='admin'?`<button class="delete-ann" onclick="deleteAnnouncement('${doc.id}')">×</button>`:''}
             <h4>${d.title}${userRole==='admin'?targetBadge:''}</h4>
