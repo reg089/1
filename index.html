@@ -467,6 +467,12 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
+let billingSchoolData = {students:[]};
+let billingSearchQuery = "";
+let billingSelectedStudentId = null;
+let billingUnsub = null;
+let announcementUnsub = null;
+
 let currentUser = null;
 let userRole = 'student';
 let userName = '';
@@ -506,6 +512,17 @@ function attachEvents(){
   document.querySelectorAll('.nav-btn[data-page]').forEach(btn=>{
     btn.addEventListener('click', (e)=>showPage(e.currentTarget.dataset.page, e.currentTarget));
   });
+}
+get('billingAddStudentBtn')?.addEventListener('click', billingAddStudent);
+  get('billingSearchStudentInput')?.addEventListener('input', e => {
+    billingSearchQuery = e.target.value;
+    billingRenderStudentList();
+  });
+  get('billingImportBtn')?.addEventListener('click', ()=>get('billingExcelFile').click());
+  get('billingPrintBtn')?.addEventListener('click', ()=>window.print());
+  get('billingExportExcelBtn')?.addEventListener('click', billingExportExcel);
+  get('billingClearAllBtn')?.addEventListener('click', billingClearAll);
+  get('billingExcelFile')?.addEventListener('change', billingImportExcel);
 }
 
 async function staffLogin(){
