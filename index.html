@@ -902,11 +902,11 @@ document.addEventListener('contextmenu', e => {
 
 function loadFeedback() {
   if(feedbackUnsub) feedbackUnsub();
-
+  
   feedbackUnsub = db.collection('feedback').orderBy('timestamp','desc').onSnapshot(snap => {
     window.allFeedback = [];
     snap.forEach(doc => {
-      window.allFeedback.push({id: doc.id,...doc.data()});
+      window.allFeedback.push({id: doc.id, ...doc.data()});
     });
     if(userRole === 'admin') renderFeedback('all');
   });
@@ -915,8 +915,8 @@ function loadFeedback() {
 function renderFeedback(filter) {
   const list = document.getElementById('feedbackList');
   let filtered = window.allFeedback || [];
-
-  if(filter!== 'all') {
+  
+  if(filter !== 'all') {
     filtered = filtered.filter(f => f.role === filter);
   }
 
@@ -927,15 +927,15 @@ function renderFeedback(filter) {
 
   let html = '';
   filtered.forEach(f => {
-    const date = f.timestamp? new Date(f.timestamp.toDate()).toLocaleString() : '-';
-    const badgeClass = f.role === 'teacher'? 'badge-teacher' : 'badge-student';
+    const date = f.timestamp ? new Date(f.timestamp.toDate()).toLocaleString() : '-';
+    const badgeClass = f.role === 'teacher' ? 'badge-teacher' : 'badge-student';
     html += `
       <div class="feedback-card">
         <h4>${f.userName} <span class="badge ${badgeClass}">${f.role}</span></h4>
         <div class="feedback-meta">Category: ${f.type} | ${date}</div>
         <p>${f.message}</p>
         <div class="feedback-actions">
-          ${f.resolved? '<span style="color:var(--accent2)">✓ Resolved</span>' :
+          ${f.resolved ? '<span style="color:var(--accent2)">✓ Resolved</span>' : 
             `<button class="btn btn-success" onclick="markFeedbackResolved('${f.id}')">Mark Resolved</button>`}
           <button class="btn btn-danger" onclick="deleteFeedback('${f.id}')">Delete</button>
         </div>
@@ -955,7 +955,7 @@ async function submitFeedback(e) {
 
   const type = document.getElementById('feedbackType').value;
   const message = document.getElementById('feedbackMessage').value.trim();
-  if(!type ||!message) return showToast("Fill all fields", "error");
+  if(!type || !message) return showToast("Fill all fields", "error");
 
   try {
     await db.collection('feedback').add({
@@ -975,18 +975,17 @@ async function submitFeedback(e) {
 }
 
 async function markFeedbackResolved(id) {
-  if(userRole!== 'admin') return;
+  if(userRole !== 'admin') return;
   await db.collection('feedback').doc(id).update({resolved: true});
   showToast("Marked as resolved");
 }
 
 async function deleteFeedback(id) {
-  if(userRole!== 'admin') return showToast("Admin only", "error");
+  if(userRole !== 'admin') return showToast("Admin only", "error");
   if(!confirm("Delete this feedback?")) return;
   await db.collection('feedback').doc(id).delete();
   showToast("Feedback deleted");
 }
-
 /* ================= BILLING MODULE - ADMIN ONLY ================= */
 
 function initBilling(){
