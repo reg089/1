@@ -381,7 +381,7 @@ th{color:var(--text2);font-size:0.85rem;text-transform:uppercase}
 const ADMIN_PASS = "admin123";
 const TEACHER_PASS = "teacher123";
 // ===== AI CONFIG - GET YOUR FREE KEY =====
-const GEMINI_API_KEY = "AQ.Ab8RN6IO5_QJlD_JOZf5ITmrR3c3_ALCL0JlC3KJV_kpiekbGw"; // https://aistudio.google.com/apikey
+const GEMINI_API_KEY = ""; // https://aistudio.google.com/apikey
 // ==================================
 
 const firebaseConfig = {
@@ -1077,7 +1077,7 @@ async function sendChat(){
     const needsSearch = /who is|what is|when did|current|latest|news|today|2024|2025|2026|define|explain|history|science|geography/i.test(msg);
     let searchContext = "";
 
-    if(needsSearch && GEMINI_API_KEY !== "AQ.Ab8RN6KVqwZy33E_OC0HAqhQNjyHPbgNkIF0ouYg8YNZriZP_g"){
+    if(needsSearch && GEMINI_API_KEY !== ""){
       // Search Wikipedia
       try {
         const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(msg.split(' ').slice(0,5).join('_'))}`);
@@ -1104,7 +1104,7 @@ async function sendChat(){
     const history = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
     history.push({role: "user", parts: [{text: msg}]});
 
-    if(GEMINI_API_KEY === "AQ.Ab8RN6JMHlNsw3WHfLBhHdWn_F9MhSsqlMreaCBrLbmng6aRGg"){
+    if(GEMINI_API_KEY === ""){
       // Fallback if no API key set
       document.getElementById(typingId).innerHTML = `🤖 SmartEdu AI Assistant<br><br>I can help you with:<br>• Mathematics<br>• English<br>• ICT<br>• Science<br>• History<br>• Assignments<br>• Revision<br><br>Type your question clearly.<br><br><i>Note: Set GEMINI_API_KEY in code for live Wikipedia + web answers</i>`;
       return;
